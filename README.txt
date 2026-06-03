@@ -8,6 +8,12 @@ Required files:
 - index.html
 - styles.css
 - app.js
+- materials-index.json
 - materials.json
+- materials-000.json and following chunk files
 - facets.json
 - .nojekyll
+
+Optional for Python server:
+- server.py
+- musicdb.sqlite

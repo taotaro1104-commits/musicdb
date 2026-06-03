@@ -29,9 +29,10 @@ const state = {
   source: "api",
   staticMaterials: null,
   materialById: null,
+  chunkCache: new Map(),
 };
 
-const ASSET_VERSION = "1000-2";
+const ASSET_VERSION = "3000-1";
 
 const typeLabels = {
   bgm: "BGM",
@@ -116,7 +117,12 @@ async function fetchJson(url, options) {
 
 async function ensureStaticMaterials() {
   if (state.staticMaterials) return;
-  const data = await fetchJson("materials.json");
+  let data;
+  try {
+    data = await fetchJson("materials-index.json");
+  } catch (_error) {
+    data = await fetchJson("materials.json");
+  }
   const items = data.items || data;
   state.staticMaterials = items.map((item) => ({
     ...item,
@@ -138,6 +144,18 @@ async function ensureStaticMaterials() {
       .toLowerCase(),
   }));
   state.materialById = new Map(state.staticMaterials.map((item) => [item.id, item]));
+}
+
+async function getStaticMaterialById(id) {
+  await ensureStaticMaterials();
+  const indexed = state.materialById.get(id);
+  if (!indexed) return null;
+  if (!indexed._chunk) return indexed;
+  if (!state.chunkCache.has(indexed._chunk)) {
+    const chunk = await fetchJson(indexed._chunk);
+    state.chunkCache.set(indexed._chunk, new Map((chunk.items || chunk).map((item) => [item.id, item])));
+  }
+  return state.chunkCache.get(indexed._chunk).get(id) || indexed;
 }
 
 function staticMatches(item) {
@@ -303,15 +321,13 @@ async function showDetail(id) {
 
   let item = null;
   if (state.source === "static") {
-    await ensureStaticMaterials();
-    item = state.materialById.get(id);
+    item = await getStaticMaterialById(id);
   } else {
     try {
       item = await fetchJson(`api/materials/${encodeURIComponent(id)}`);
     } catch (_error) {
       state.source = "static";
-      await ensureStaticMaterials();
-      item = state.materialById.get(id);
+      item = await getStaticMaterialById(id);
     }
   }
 
@@ -409,7 +425,7 @@ async function init() {
     els.activeFilters.textContent =
       location.protocol === "file:"
         ? "GitHub PagesまたはローカルHTTPサーバーで開いてください"
-        : "materials.json と facets.json の配置を確認してください";
+        : "materials-index.json と facets.json の配置を確認してください";
     els.items.innerHTML = '<div class="empty">データファイルを読み込めませんでした</div>';
     console.error(error);
   }
