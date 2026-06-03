@@ -31,6 +31,8 @@ const state = {
   materialById: null,
 };
 
+const ASSET_VERSION = "1000";
+
 const typeLabels = {
   bgm: "BGM",
   se: "効果音",
@@ -105,7 +107,9 @@ async function loadFacets() {
 }
 
 async function fetchJson(url, options) {
-  const res = await fetch(url, options);
+  const separator = url.includes("?") ? "&" : "?";
+  const versionedUrl = `${url}${separator}v=${ASSET_VERSION}`;
+  const res = await fetch(versionedUrl, { cache: "no-store", ...options });
   if (!res.ok) throw new Error(url);
   return res.json();
 }
