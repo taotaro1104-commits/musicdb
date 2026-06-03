@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>フリーBGM・効果音DB</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">SQLite Audio Catalog</p>
+        <h1>フリーBGM・効果音DB</h1>
+      </div>
+      <form class="search" id="searchForm">
+        <input id="query" name="q" type="search" autocomplete="off" placeholder="曲名・用途・タグで検索">
+        <button type="submit">検索</button>
+      </form>
+    </header>
+
+    <main class="shell">
+      <aside class="filters" aria-label="絞り込み">
+        <div class="filter-row">
+          <label for="typeFilter">種別</label>
+          <select id="typeFilter">
+            <option value="">すべて</option>
+          </select>
+        </div>
+        <div class="filter-row">
+          <label for="genreFilter">ジャンル</label>
+          <select id="genreFilter">
+            <option value="">すべて</option>
+          </select>
+        </div>
+        <div class="filter-row">
+          <label for="siteFilter">サイト</label>
+          <select id="siteFilter">
+            <option value="">すべて</option>
+          </select>
+        </div>
+        <div class="filter-row">
+          <label for="licenseFilter">ライセンス</label>
+          <select id="licenseFilter">
+            <option value="">すべて</option>
+          </select>
+        </div>
+        <div class="check-grid">
+          <label><input id="commercialFilter" type="checkbox"> 商用可</label>
+          <label><input id="youtubeFilter" type="checkbox"> YouTube可</label>
+          <label><input id="creditFreeFilter" type="checkbox"> クレジット不要</label>
+        </div>
+        <div class="filter-row split">
+          <label for="sortFilter">並び順</label>
+          <select id="sortFilter">
+            <option value="title">タイトル</option>
+            <option value="updated">更新日</option>
+            <option value="duration">短い順</option>
+          </select>
+        </div>
+        <div class="filter-row split">
+          <label for="pageSize">表示数</label>
+          <select id="pageSize">
+            <option value="12">12</option>
+            <option value="24" selected>24</option>
+            <option value="48">48</option>
+          </select>
+        </div>
+        <button class="ghost" id="resetFilters" type="button">リセット</button>
+      </aside>
+
+      <section class="results" aria-live="polite">
+        <div class="result-head">
+          <div>
+            <p id="summary" class="summary">読み込み中</p>
+            <p id="activeFilters" class="active-filters"></p>
+          </div>
+          <div id="loading" class="loading" hidden>検索中</div>
+        </div>
+        <div id="items" class="item-grid"></div>
+        <nav id="pager" class="pager" aria-label="ページ"></nav>
+      </section>
+
+      <aside id="detail" class="detail" aria-label="詳細" hidden>
+        <button id="closeDetail" class="icon-button" type="button" aria-label="閉じる">×</button>
+        <div id="detailBody"></div>
+      </aside>
+    </main>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
