@@ -31,7 +31,7 @@ const state = {
   materialById: null,
 };
 
-const ASSET_VERSION = "1000";
+const ASSET_VERSION = "1000-2";
 
 const typeLabels = {
   bgm: "BGM",
