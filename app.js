@@ -32,7 +32,7 @@ const state = {
   chunkCache: new Map(),
 };
 
-const ASSET_VERSION = "4000-1";
+const ASSET_VERSION = "4000-seo1";
 
 const typeLabels = {
   bgm: "BGM",
@@ -416,6 +416,8 @@ function bindEvents() {
 
 async function init() {
   try {
+    const initialParams = new URLSearchParams(location.search);
+    if (initialParams.get("q")) els.query.value = initialParams.get("q");
     bindEvents();
     await loadFacets();
     await loadMaterials();

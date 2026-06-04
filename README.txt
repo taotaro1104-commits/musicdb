@@ -8,10 +8,16 @@ Required files:
 - index.html
 - styles.css
 - app.js
+- favicon.ico
+- ogp.png
 - materials-index.json
 - materials.json
 - materials-000.json and following chunk files
 - facets.json
+- material-*.html
+- sitemap.xml
+- robots.txt
+- llms.txt
 - .nojekyll
 
 Optional for Python server:
