@@ -32,7 +32,7 @@ const state = {
   chunkCache: new Map(),
 };
 
-const ASSET_VERSION = "3000-1";
+const ASSET_VERSION = "4000-1";
 
 const typeLabels = {
   bgm: "BGM",
